@@ -2,7 +2,7 @@
 
 An intelligent web application that transforms podcast audio into searchable knowledge using Whisper transcription and Retrieval-Augmented Generation (RAG) technology.
 
-<img src="img/img1.PNG" width="300" height="400">
+<img src="img/img1.PNG" width="200" height="400">
 
 ## 🚀 Features
 
