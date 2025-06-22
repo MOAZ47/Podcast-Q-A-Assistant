@@ -1,7 +1,5 @@
-weaviate-client 
 langchain==0.2.11 
 langchain-community==0.2.10
-langchain-weaviate 
 langchain_cohere 
 cohere 
 sentence-transformers
@@ -10,3 +8,5 @@ gradio
 streamlit
 fastapi
 pydantic
+transformers 
+duckduckgo-search

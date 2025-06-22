@@ -1,21 +1,33 @@
- 
-from services.whisper_service import transcribe_audio
-from services.splitter_service import split_text
-from services.embedding_service import create_vectorstore
-from services.rag_chain_service import build_rag_chain
+from agents.transcription import transcribe_podcast
+from agents.summarizer import summarize_text
+from agents.factchecker import fact_check
+from agents.reporter import reporter
 
-def initialize_pipeline(transcription: str, query: str):
-    # 1. Transcribe
-    #transcription = transcribe_audio(audio_path)
+from langchain.agents import Tool
+from langchain_cohere import ChatCohere
 
-    # 2. Split into chunks
-    chunks = split_text(transcription)
+import config
 
-    # 3. Create vectorstore
-    vectorstore = create_vectorstore(chunks)
 
-    # 4. Build RAG chain
-    #rag_chain = build_rag_chain(vectorstore)
 
-    #return rag_chain, transcription
-    return build_rag_chain(vectorstore, query)
+def initialize_pipeline (podcast_transcript):
+
+    summarizer_tool = Tool(
+        name="PodcastSummarizer",
+        func=summarize_text,
+        description="Summarize the podcast transcription."
+    )
+
+    
+    if podcast_transcript:
+        summary = summarizer_tool.run(podcast_transcript)
+
+    fact_check_output = fact_check(summary)
+
+    print(f"TYPE Fact Check Output: \n{type(fact_check_output)} \n")
+
+    report = reporter(summary, fact_check_output)
+
+    #print(f"Report: \n{report} \n")
+
+    return report

@@ -1,68 +1,104 @@
-# 🎙️ Podcast Q&A Assistant
+# 🎙️ Podcast Q&A Assistant with Multimodal RAG + Agentic AI Framework
 
-An intelligent web application that transforms podcast audio into searchable knowledge using Whisper transcription and Retrieval-Augmented Generation (RAG) technology.
+A Multimodal LLM Agentic AI application that allows users to upload podcast/audio files, transcribes them using Whisper, summarizes the content, fact-checks the claims using an LLM + internet search, and delivers a clear, confidence-rated report — all through a modular multi-agent pipeline.
 
-<img src="img/img1.PNG">
+---
 
 ## 🚀 Features
 
-| Feature | Description |
-|---------|-------------|
-| **Multi-format Support** | Upload `.mp3`, `.wav`, or `.m4a` files |
-| **Accurate Transcription** | Whisper ASR with model size options (base/small/medium/large) |
-| **Semantic Search** | Weaviate vector database with Cohere embeddings |
-| **Intelligent Q&A** | RAG pipeline providing contextual answers |
-| **User-Friendly UI** | Streamlit interface with audio playback |
+✅ Upload and analyze any podcast/audio file  
+✅ Automatic transcription using OpenAI Whisper  
+✅ Summary generation via LLM  
+✅ Claim-level fact-checking using external evidence  
+✅ Agent-based architecture: transcriber, summarizer, fact-checker, reporter  
+✅ Interactive Streamlit UI  
+✅ Few-shot prompting with example control  
+✅ Session memory, rerun/reset support  
+✅ Modular codebase for easy scaling
 
+---
 
-## 🛠️ Quick Start
+## 📦 Tech Stack
 
-### Prerequisites
-- Python 3.8+
-- FFmpeg (`sudo apt install ffmpeg` or [download](https://ffmpeg.org/))
-- Cohere API key ([sign up](https://dashboard.cohere.com/))
+| Component       | Technology                                |
+|------------------|--------------------------------------------|
+| Transcription    | [OpenAI Whisper](https://github.com/openai/whisper) |
+| LLM              | [Cohere LLM](https://cohere.com) via LangChain |
+| Fact Checking    | Custom agent using LLM + external search   |
+| Vector Store     | [Weaviate](https://weaviate.io/) (optional) |
+| Prompting        | LangChain's `FewShotPromptTemplate`        |
+| Frontend         | Streamlit                                  |
+| Embeddings       | Sentence Transformers via HuggingFace      |
 
-### Installation
+---
 
-Here's the corrected version with proper code block formatting:
+## 🧠 Architecture Overview
 
-```markdown
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/MOAZ47/Podcast-Q-A-Assistant.git
-   cd Podcast-Q-A-Assistant
-   ```
+```plaintext
+User Uploads Audio
+        │
+        ▼
+[ Transcriber Agent ]  ← Whisper
+        │
+        ▼
+[ Summarizer Agent ]   ← LLM (Cohere or others)
+        │
+        ▼
+[ Fact-Checker Agent ] ← LLM + Internet
+        │
+        ▼
+[ Reporter Agent ]     ← Few-shot LLM Report Generation
+        │
+        ▼
+Streamlit UI → Transcript + Final Report
 
-2. Set up virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Linux/MacOS
-   .\venv\Scripts\activate  # Windows
-   ```
+```
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+---
 
+## Installation
+```bash
+git clone https://github.com/Moaz47/Podcast-Q-A-Assistant.git
+cd agentic-audio-rag
 
-## 🧩 Example Usage
-   ```bash
-   streamlit run app.py
-   ```
+# Optional: set up a virtual environment
+python -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
 
-## ⚠️ Troubleshooting
-| Issue	 | Solution |
-|---------|-------------|
-|Large file errors | Use smaller Whisper model or chunk audio files |
-|WinError 2 | Install FFmpeg and add to PATH |
-|API key errors | Verify keys in .env and service quotas |
-	
-	
-	
+# Install dependencies
+pip install -r requirements.txt
+```
+---
 
+## Running the code
+```bash
+streamlit run app.py
 
+```
 
+---
 
+## 📁 Project Structure
+```plaintext
+.
+├── app.py               # Streamlit app UI
+├── main.py              # Orchestrates the pipeline
+├── config.py            # API keys
+├── agents/
+│   ├── transcription.py
+│   ├── summarizer.py
+│   ├── factchecker.py
+│   └── reporter.py
+├── requirements.txt
+└── README.md
 
+```
+---
 
+## ✨ Future Improvements
+<ul>
+    <li>Add chat interface for user questions over the podcast. </li>
+    <li>Exportable PDF reports. </li>
+    <li>Multi-turn memory for user corrections. </li>
+    <li>OpenAI / Gemini model switching. </li>
+</ul>

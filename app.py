@@ -1,71 +1,68 @@
 import streamlit as st
 import os
 from tempfile import NamedTemporaryFile
-from main import initialize_pipeline  # make sure your pipeline supports a dynamic file path
-import asyncio
-import nest_asyncio
-import torch
-from services.whisper_service import transcribe_audio
+from main import initialize_pipeline
 
-torch.classes.__path__ = [] # add this line to manually set it to empty. 
-
-TEMP_FILE_NAME = "./temp/temp_audio.wav"
-
-# Patch the event loop
-nest_asyncio.apply()
-asyncio.set_event_loop(asyncio.new_event_loop())
+from agents.transcription import transcribe_podcast
+from langchain.agents import Tool
 
 # Initialize session state
-if "rag_chain" not in st.session_state:
-    st.session_state.rag_chain = None
-if "transcription" not in st.session_state:
-    st.session_state.transcription = None
-if "file_uploaded" not in st.session_state:
-    st.session_state.file_uploaded = False
+if "transcript" not in st.session_state:
+    st.session_state.transcript = None
+if "report" not in st.session_state:
+    st.session_state.report = None
 
-# Title
+# Define Tool for transcription
+transcriber_tool = Tool(
+        name="PodcastTranscriber",
+        func=transcribe_podcast,
+        description="Use this to transcribe a podcast audio file."
+    )
+
 st.title("🎙️ Podcast Q&A Assistant")
-st.write("Upload a podcast audio file and ask questions about its content.")
 
-# Upload audio file
-uploaded_file = st.file_uploader("Upload an audio file", type=["mp3", "wav", "m4a"])
+st.write('LLM powered podcast analyser to check if the content of podcast are factual or not')
 
-# Handle file upload and pipeline initialization
-if uploaded_file and not st.session_state.file_uploaded:
+uploaded_file = st.file_uploader("Choose a file")
+if uploaded_file is not None:
     st.audio(uploaded_file)
+
     with NamedTemporaryFile(delete=False, suffix=os.path.splitext(uploaded_file.name)[-1],
                             dir="temp") as tmp_file:
         tmp_file.write(uploaded_file.read())
         file_path = tmp_file.name
-    print("\n File uploaded \n")
-    with st.spinner("Initializing pipeline and transcribing audio..."):
-        try:
-            transcription = transcribe_audio(file_path)
-            #rag_chain, transcription = initialize_pipeline(file_path)
-            #st.session_state.rag_chain = rag_chain
-            st.session_state.transcription = transcription
-            st.session_state.file_uploaded = True
-            os.unlink(file_path)  # Clean up temp file
-        except Exception as e:
-            st.error(f"Error: {e}")
-            os.unlink(file_path)
-
-# Show transcription and enable Q&A
-if st.session_state.file_uploaded:
-    st.success("Audio processed successfully!")
     
-    st.subheader("Transcription Preview")
-    st.text_area("Full Transcription", st.session_state.transcription, height=200)
+    print(f"file saved at: {file_path}")
 
-    question = st.text_input("Ask a question about the podcast")
-    if question:
-        with st.spinner("Generating answer..."):
-            response = initialize_pipeline(st.session_state.transcription, question)
-        st.subheader("Answer")
-        st.write(response)
+    if st.button("🔍 Analyze Podcast"):
+        with st.spinner("Transcribing and analyzing..."):
+            try:
+                # Run transcription
+                transcription = transcriber_tool.run(file_path)
+                st.session_state.transcript = transcription
 
-# Reset functionality
-if st.button("Reset"):
-    for key in ["rag_chain", "transcription", "file_uploaded"]:
-        st.session_state[key] = None
-    st.rerun()
+                # Run analysis pipeline
+                report = initialize_pipeline(transcription)
+                st.session_state.report = report
+
+                os.unlink(file_path)  # Clean up temp file
+            except Exception as e:
+                st.error(f"An error occurred: {e}")
+                os.unlink(file_path)
+
+# Display transcript and report if available
+if st.session_state.transcript:
+    st.subheader("📄 Transcript")
+    st.text_area("Transcript", st.session_state.transcript, height=300)
+
+if st.session_state.report:
+    st.subheader("📊 Analysis Report")
+    st.text_area("Report", st.session_state.report, height=300)
+
+# Rerun/reset session
+st.markdown("---")
+if st.button("🔁 Rerun / Start Over"):
+    for key in list(st.session_state.keys()):
+        del st.session_state[key]
+    st.success("Session reset. Please upload a new podcast file to begin.")
+    st.experimental_rerun()
