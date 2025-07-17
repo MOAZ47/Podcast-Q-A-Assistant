@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Navigate to the application directory (replace with your actual path if different)
-cd /home/ec2-user/your-repo-name # Amazon Linux default user is ec2-user
+cd /home/ec2-user/Podcast-Q-A-Assistant # Amazon Linux default user is ec2-user
 # cd /home/ubuntu/your-repo-name # For Ubuntu instances
 
 # Pull the latest code from GitHub
