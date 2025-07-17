@@ -54,6 +54,7 @@ Streamlit UI → Transcript + Final Report
 
 ```
 ---
+## ⚡ Performance Improvements
 
 | Stage              | Before          | After Optimization | Improvement                                     |
 | ------------------ | --------------- | ------------------ | ----------------------------------------------- |
@@ -63,6 +64,14 @@ Streamlit UI → Transcript + Final Report
 | **Report Gen**     | \~95 seconds 😅 | \~2–3 seconds 😎   | ✅ Optimized FewShot prompts and LLM chaining    |
 | **Total Pipeline** | \~160 seconds   | \~100–130 seconds    | 🚀 **30% reduction in latency**              |
 
+### How it was achieved:
+<ul>
+        <li>⚙️ Chunk-level parallelism for both summarization and fact-checking</li>
+        <li>🧠 Smarter prompting and output parsing using FewShotPromptTemplate</li>
+        <li>🪄 Async threading for internet search queries in fact-checking</li>
+        <li>🔄 Streaming logs and better memory cleanup during agent invocation</li>
+        <li>🪶 Lightweight models like command-light used where possible</li>
+</ul>
 
 
 ---
