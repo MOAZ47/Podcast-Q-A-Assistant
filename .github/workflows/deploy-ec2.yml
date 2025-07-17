@@ -70,21 +70,10 @@ jobs:
           script: |
             cd /home/${{ env.EC2_USER }}/Podcast-Q-A-Assistant
             
-            # Create config.py with actual values (no placeholders)
-            cat > config.py <<EOL
-            # Auto-generated during deployment
-            COHERE_API_KEY = "$COHERE_API_KEY"
-            TAVILY_API_KEY = "$TAVILY_API_KEY"
-            EOL
-            
-            # Verify config.py was created (optional)
-            cat config.py
-            
-            # Rest of deployment
-            bash deploy.sh
-          envs: |
-            COHERE_API_KEY=${{ secrets.COHERE_API_KEY }}
-            TAVILY_API_KEY=${{ secrets.TAVILY_API_KEY }}
+            bash deploy.sh \
+              --cohere-key "${{ secrets.COHERE_API_KEY }}" \
+              --tavily-key "${{ secrets.TAVILY_API_KEY }}"
+          
 
       - name: Verify Deployment (Optional)
         run: |
