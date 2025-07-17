@@ -11,5 +11,5 @@ streamlit
 #pydantic
 transformers 
 duckduckgo-search
-tavily
+tavily-python
 pytest
