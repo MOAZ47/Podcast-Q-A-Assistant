@@ -68,7 +68,7 @@ jobs:
           username: ${{ env.EC2_USER }}
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
-            cd /home/${{ env.EC2_USER }}/your-repo-name
+            cd /home/${{ env.EC2_USER }}/Podcast-Q-A-Assistant
             
             # Create config.py with actual values (no placeholders)
             cat > config.py <<EOL
