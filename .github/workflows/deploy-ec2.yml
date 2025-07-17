@@ -13,6 +13,16 @@ on:
       - 'agents/**'
       - 'requirements.txt'
       - 'deploy.sh' # Crucial: Trigger when deploy script changes
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
 
 env:
   EC2_USER: ec2-user # Default user for Amazon Linux. For Ubuntu, use 'ubuntu'.
