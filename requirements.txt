@@ -1,7 +1,7 @@
 langchain
 langchain-community
-langchain_cohere 
-#cohere 
+langchain_cohere == 0.2.4
+cohere == 5.16.1 
 sentence-transformers
 openai-whisper  
 faster-whisper
