@@ -1,7 +1,7 @@
 langchain
 langchain-community
 langchain_cohere 
-cohere 
+#cohere 
 sentence-transformers
 openai-whisper  
 faster-whisper
