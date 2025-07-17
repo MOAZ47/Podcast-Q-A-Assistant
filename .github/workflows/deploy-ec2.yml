@@ -5,7 +5,7 @@ name: Deploy Streamlit App to EC2
 on:
   push:
     branches:
-      - main # Workflow runs when code is pushed to the 'main' branch
+      - master # Workflow runs when code is pushed to the 'main' branch
     paths:
       - 'app.py'
       - 'main.py' # If main.py is also part of your Streamlit app logic
@@ -39,7 +39,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
             # Navigate to the app directory on EC2
-            cd /home/${{ env.EC2_USER }}/your-repo-name # Replace 'your-repo-name' with your actual repo folder name
+            cd /home/${{ env.EC2_USER }}/Podcast-Q-A-Assistant # Replace 'your-repo-name' with your actual repo folder name
             # Run the deployment script on the EC2 instance
             bash deploy.sh
 
