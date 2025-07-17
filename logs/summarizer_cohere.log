@@ -526,3 +526,4 @@ The fact-check portion of the report accu...
 2025-07-16 19:21:28,342 - INFO - [END] Report generated.
 2025-07-16 19:21:28,345 - INFO - Report generation took 19.64 seconds
 2025-07-16 19:21:28,348 - INFO - Total processing time: 90.75 seconds
+2025-07-17 22:40:24,125 - INFO - [INFO] Starting new test with model: command-light
