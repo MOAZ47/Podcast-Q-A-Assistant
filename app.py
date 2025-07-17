@@ -55,7 +55,7 @@ st.markdown(
     """
 )
 
-# --- Session State ---
+# --- Session State ----
 if "transcript" not in st.session_state:
     st.session_state.transcript = None
 if "report" not in st.session_state:

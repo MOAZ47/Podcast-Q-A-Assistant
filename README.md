@@ -1,4 +1,4 @@
-# 🎙️ Podcast Q&A Assistant with Multimodal RAG + Agentic AI Framework
+# 🎙️ Podcast Fact Check Assistant with Multimodal RAG + Agentic AI Framework
 
 A Multimodal LLM Agentic AI application that allows users to upload podcast/audio files, transcribes them using Whisper, summarizes the content, fact-checks the claims using an LLM + internet search, and delivers a clear, confidence-rated report — all through a modular multi-agent pipeline.
 
