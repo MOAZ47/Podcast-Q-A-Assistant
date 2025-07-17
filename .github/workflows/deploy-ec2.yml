@@ -70,9 +70,7 @@ jobs:
           script: |
             cd /home/${{ env.EC2_USER }}/Podcast-Q-A-Assistant
             
-            bash deploy.sh \
-              --cohere-key "${{ secrets.COHERE_API_KEY }}" \
-              --tavily-key "${{ secrets.TAVILY_API_KEY }}"
+            bash deploy.sh ${{ secrets.COHERE_API_KEY }} ${{ secrets.TAVILY_API_KEY }}
           
 
       - name: Verify Deployment (Optional)
