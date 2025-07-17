@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 # Ensure handlers are only added once
+# Below ensures the log of this file takes precedence over others
 if not logger.handlers:
     # File handler for app_latency.log
     file_handler = RotatingFileHandler(LOG_PATH, maxBytes=5_000_000, backupCount=2, encoding="utf-8")
