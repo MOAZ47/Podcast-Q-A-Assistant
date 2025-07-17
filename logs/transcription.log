@@ -1,0 +1,6 @@
+2025-07-16 14:52:31,416 - WARNING - Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+2025-07-16 14:53:22,759 - INFO - [INFO] Loaded Whisper model 'base' on CPU in 52.01s
+2025-07-16 14:53:22,764 - INFO - [START] Transcribing file: elon_musk_starship_rocket.mp3
+2025-07-16 14:53:25,448 - INFO - Processing audio with duration 04:10.984
+2025-07-16 14:54:31,613 - INFO - [DONE] Transcription completed in 68.85s
+2025-07-16 14:54:31,614 - INFO - [INFO] Duration: 250.98s | Language: en | Segments: 52

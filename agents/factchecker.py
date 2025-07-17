@@ -1,50 +1,146 @@
-from langchain_community.tools import DuckDuckGoSearchRun
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough
-from langchain_core.prompts import ChatPromptTemplate
-from langchain.agents import Tool
-from langchain_cohere import ChatCohere
-
-import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+import sys
+import logging
+import warnings
+import time
+from datetime import datetime
+import pytz
+from concurrent.futures import ThreadPoolExecutor
+
+from langchain.agents import AgentExecutor, create_tool_calling_agent, Tool
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_cohere import ChatCohere
+from tavily import TavilyClient
+
+# --- Path setup ---
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import config
 
+# --- Logging Setup ---
+LOG_DIR = os.path.join(os.path.dirname(__file__), "..", "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
+LOG_PATH = os.path.join(LOG_DIR, "factchecker.log")
 
-def fact_check(summary):
-    # Step 3: Agent 2 – Fact Checker (Using Web Search)
-    llm = ChatCohere(model= 'command', cohere_api_key=config.COHERE_API_KEY)
-
-    search = DuckDuckGoSearchRun()
-
-    tools = [
-        Tool(
-            name="DuckDuckGo Search",
-            func=search.run,
-            description="Search the web for facts mentioned in a podcast transcript."
-        )
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler(LOG_PATH),
+        logging.StreamHandler()
     ]
+)
+logger = logging.getLogger(__name__)
 
-    fact_check_prompt = ChatPromptTemplate.from_template(
-        """Check the following summary for factual accuracy:
+# --- Suppress known warnings ---
+warnings.filterwarnings("ignore", category=DeprecationWarning, module="pydantic")
+warnings.filterwarnings("ignore", category=DeprecationWarning, module="cohere")
+warnings.filterwarnings("ignore", category=FutureWarning, module="cohere.core.unchecked_base_model")
 
-        Summary: {summary}
+# --- Initialize LLM ---
+llm = ChatCohere(
+    model="command-r",
+    temperature=0.3,
+    cohere_api_key=config.COHERE_API_KEY
+)
 
-        Search the web and list any factual inconsistencies or confirmations. Be concise.
-        """
+# --- Tavily API Setup ---
+TAVILY_API_KEY = getattr(config, "TAVILY_API_KEY", os.getenv("TAVILY_API_KEY"))
+tavily = TavilyClient(api_key=TAVILY_API_KEY)
+
+# --- Parallel Search Functions (Threaded) ---
+def threaded_search(query: str) -> str:
+    logger.info(f"[SEARCH] Querying: {query}")
+    try:
+        result = tavily.search(query=query, include_answer=True, max_results=3)
+        answer = result.get("answer") or "No clear answer found."
+        logger.info(f"[RESULT] {query} => {answer[:100]}...")
+        return answer
+    except Exception as e:
+        logger.error(f"[ERROR] Search failed for '{query}': {e}")
+        return "Search error."
+
+def run_parallel_searches(queries: list[str]) -> dict[str, str]:
+    logger.info(f"[INFO] Running {len(queries)} threaded searches.")
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        results = list(executor.map(threaded_search, queries))
+    return dict(zip(queries, results))
+
+# --- LangChain Tool Wrapper ---
+class ParallelFactSearchTool:
+    name = "parallel_fact_search"
+    description = "Run multiple fact-checking searches in parallel and return structured answers."
+
+    def run(self, queries: str) -> str:
+        query_list = [q.strip() for q in queries.strip().split("\n") if q.strip()]
+        if not query_list:
+            logger.warning("[WARNING] No valid search queries received.")
+            return "No valid queries provided."
+
+        results = run_parallel_searches(query_list)
+        return "\n".join(f"{q}: {a}" for q, a in results.items())
+
+# --- Tool Registration ---
+tools = [
+    Tool(
+        name="parallel_fact_search",
+        func=ParallelFactSearchTool().run,
+        description="Useful for checking multiple factual claims at once. Input should be newline-separated search questions."
     )
+]
 
-    fact_check_chain = (
-        {"summary": RunnablePassthrough()}
-        | fact_check_prompt
-        | llm
-        | StrOutputParser()
-    )
+# --- Prompt Template ---
+prompt = ChatPromptTemplate.from_messages([
+    ("system", """You are a highly accurate fact-checking assistant. Your job is to verify claims.
 
-    return fact_check_chain.invoke(summary)
+Follow these steps:
+1. Break down complex input into specific factual sub-claims.
+2. Formulate precise search questions.
+3. Use `parallel_fact_search` to batch queries (newline-separated).
+4. Analyze answers from reliable sources.
+5. Provide a verdict: "Factually Accurate", "Partially Accurate", or "Inaccurate".
+6. Support your verdict with clear evidence and sources (e.g. [Source: NASA.gov]).
 
+Current Date and Time: {current_datetime}
+Current Location: {current_location}
+"""),
+    ("human", "{input}"),
+    MessagesPlaceholder("agent_scratchpad")
+])
+
+# --- Agent + Executor Setup ---
+agent = create_tool_calling_agent(llm=llm, tools=tools, prompt=prompt)
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True, handle_parsing_errors=True)
+
+# --- Main API ---
+def fact_check(claim: str) -> str:
+    try:
+        start_check = time.time()
+        logger.info(f"[FACT CHECK] Started for input: {claim[:100]}...")
+        ist = pytz.timezone('Asia/Kolkata')
+        now = datetime.now(ist).strftime("%A, %B %d, %Y at %I:%M:%S %p %Z")
+        location = "Mumbai, Maharashtra, India"
+
+        result = agent_executor.invoke({
+            "input": claim,
+            "current_datetime": now,
+            "current_location": location
+        })
+
+        output = result.get("output", "")
+        end_check = time.time()
+        logger.info("[FACT CHECK] Completed successfully.")
+        logger.info(f"[DONE] Fact Check completed in {end_check - start_check:.2f}s")
+        return output
+    except Exception as e:
+        logger.error(f"[ERROR] Fact-checking failed: {e}")
+        return f"Error: {str(e)}"
+
+# --- Direct Test Run ---
 if __name__ == "__main__":
-    summary = "Space X has undertaken another test launch of a giant new rocket that it calls Starship. Starship lifted off just after 7.30pm Eastern time today. But not everything has been going according to plan. Empire Science correspondent Jeff Brumfield joins us now to talk about this latest attempt. SpaceX said it had sprung a fuel leak and I was watching it tumble back in above the Indian Ocean. SpaceX later said that the problem there was sort of some harmonic response in the first launch. That's just a wicked vibration that actually shook up the engines until they broke and then in March there was a hardware failure and a single engine. SpaceX made it to space but you know you can't call this a success. This program is starting to look like it's slipping behind. Starship was supposed to be able to at least orbit the earth by now. And on this particular flight the fact they couldn't hit reentry is a big problem. SpaceX has talked about sending a Starship without people to Mars as soon as next year. There's so much they need to work through to get the spacecraft working. NASA wants Starship to land people on the moon asSoon as 2027. But you never count Elon Musk or SpaceX out."
-    fac = fact_check(summary)
-    print(f"Type of fact check = {type(fac)}")
-    print(f"Response of fact check = {fac}")
+    logger.info("[TEST] Running fact checker on test claims...")
+    test_claim = """NASA is funding the Artemis program for a moon landing in 2025.
+SpaceX launched Starship in 2023.
+ISRO's Chandrayaan 3 landed successfully on the moon in 2023."""
+
+    output = fact_check(test_claim)
+    print("\n🔍 Final Output:\n", output)

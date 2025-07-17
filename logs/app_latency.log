@@ -1,0 +1,15 @@
+2025-07-16 04:42:33,697 - INFO - Transcription took 68.01 seconds
+2025-07-16 04:43:32,417 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 04:43:34,364 - INFO - response: https://www.bing.com/search?q=Space+X+starship+test+launch&filters=ex1%3A%22ez5_19919_20284%22 200
+2025-07-16 04:43:34,653 - INFO - response: https://www.bing.com/search?q=Space+X+starship+launch+issues&filters=ex1%3A%22ez5_19919_20284%22 200
+2025-07-16 04:43:35,372 - INFO - response: https://www.bing.com/search?q=NASA+SpaceX+starship+moon+landing+date&filters=ex1%3A%22ez5_19919_20284%22 200
+2025-07-16 04:43:36,205 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 04:44:08,712 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 04:44:08,766 - INFO - Report generation took 95.06 seconds
+2025-07-16 04:44:08,773 - INFO - Total processing time: 163.09 seconds
+2025-07-16 18:24:12,808 - INFO - Transcription took 87.78 seconds
+2025-07-16 18:24:37,178 - INFO - Report generation took 24.35 seconds
+2025-07-16 18:24:37,182 - INFO - Total processing time: 112.15 seconds
+2025-07-16 19:21:08,701 - INFO - Transcription took 71.10 seconds
+2025-07-16 19:21:28,345 - INFO - Report generation took 19.64 seconds
+2025-07-16 19:21:28,348 - INFO - Total processing time: 90.75 seconds

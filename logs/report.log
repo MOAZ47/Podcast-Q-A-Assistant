@@ -1,0 +1,13 @@
+2025-07-16 17:06:52,783 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 17:06:52,816 - INFO - [DONE] Report generated in 2.48 seconds.
+2025-07-16 18:39:43,215 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 18:39:43,226 - INFO - [DONE] Report generated in 1.88 seconds.
+2025-07-16 18:42:18,757 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 18:42:18,778 - INFO - [DONE] Report generated in 2.23 seconds.
+2025-07-16 18:55:03,424 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 18:55:03,447 - WARNING - [WARNING] Final report is not in expected markdown format.
+2025-07-16 18:58:36,783 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 18:58:36,793 - WARNING - [WARNING] Final report is not in expected markdown format.
+2025-07-16 19:02:38,013 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 19:02:38,023 - WARNING - [WARNING] Final report is not in expected markdown format.
+2025-07-16 19:06:32,976 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"

@@ -1,0 +1,107 @@
+2025-07-16 18:07:34,336 - __main__ - INFO - [INFO] Running pipeline test with sample transcript...
+
+2025-07-16 18:07:34,338 - __main__ - INFO - [START] Running analysis pipeline...
+2025-07-16 18:07:37,330 - __main__ - INFO - [INFO] Summarization took 2.99 seconds
+2025-07-16 18:07:48,979 - __main__ - INFO - [INFO] Fact Check took 11.65 seconds
+2025-07-16 18:07:51,074 - __main__ - INFO - [INFO] Report generation took 2.09 seconds
+2025-07-16 18:07:51,075 - __main__ - INFO - [INFO] Total pipeline time: 16.74 seconds
+2025-07-16 18:07:51,077 - __main__ - INFO - [INFO] Report preview:
+Here is your fact-check report: 
+
+Based on the summary, it is a high-confidence fact check with accurate and reliable content. The claim is partially accurate to say that Donald Trump and Jeffrey Epstein had a beneficial relationship. Donald Trump's denial of their relationship with Epstein and focus on their different narratives. 
+
+Both men were associated with sexual misconduct allegations, part...
+
+2025-07-16 18:07:51,086 - __main__ - INFO - [END] Report generated.
+2025-07-16 18:13:04,509 - main - INFO - [START] Running analysis pipeline...
+2025-07-16 18:13:15,511 - main - INFO - [INFO] Summarization took 11.00 seconds
+2025-07-16 18:13:27,191 - main - INFO - [INFO] Fact Check took 11.67 seconds
+2025-07-16 18:13:30,602 - main - INFO - [INFO] Report generation took 3.41 seconds
+2025-07-16 18:13:30,609 - main - INFO - [INFO] Total pipeline time: 26.10 seconds
+2025-07-16 18:13:30,614 - main - INFO - [INFO] Report preview:
+Here is your report: 
+
+This is a Fact Check report based on a podcast transcript discussing SpaceX's recent rocket launch. It covers the recent success and challenges faced by the company. The report is partially accurate in its representation of the launch that occurred in Texas. It does hold true that there were tests involving emergency contingencies the ship could perform. There was also menti...
+
+2025-07-16 18:13:30,620 - main - INFO - [END] Report generated.
+2025-07-16 18:24:12,828 - main - INFO - [START] Running analysis pipeline...
+2025-07-16 18:24:22,188 - main - INFO - [INFO] Summarization took 9.35 seconds
+2025-07-16 18:24:33,459 - main - INFO - [INFO] Fact Check took 11.27 seconds
+2025-07-16 18:24:37,163 - main - INFO - [INFO] Report generation took 3.70 seconds
+2025-07-16 18:24:37,166 - main - INFO - [INFO] Total pipeline time: 24.34 seconds
+2025-07-16 18:24:37,168 - main - INFO - [INFO] Report preview:
+Here is your fact-check report: 
+
+The summary correctly states that the host has mentioned the recent launch of SpaceX's Starship rocket from Starbase in Texas to test emergency contingency features. It also mentions the fact that the rocket faced fuel leaks, leading to a slow tumble and eventual atmospheric burning. The claim is accurate, as it reflects the reality of the event.
+
+However, there a...
+
+2025-07-16 18:24:37,173 - main - INFO - [END] Report generated.
+2025-07-16 18:38:21,311 - __main__ - INFO - [INFO] Running pipeline test with sample transcript...
+
+2025-07-16 18:38:21,315 - __main__ - INFO - [START] Running analysis pipeline...
+2025-07-16 18:38:37,991 - __main__ - INFO - [INFO] Summarization took 16.67 seconds
+2025-07-16 18:39:01,666 - __main__ - INFO - [INFO] Fact Check took 23.67 seconds
+2025-07-16 18:39:03,789 - __main__ - INFO - [INFO] Report generation took 2.12 seconds
+2025-07-16 18:39:03,791 - __main__ - INFO - [INFO] Total pipeline time: 42.48 seconds
+2025-07-16 18:39:03,794 - __main__ - INFO - [INFO] Report preview:
+The summary provided an accurate account of SpaceX's recent rocket launch from Starbase in Texas. The launch involved a successful separation of the superheavy booster and an atmospheric fire demonstration. However, the podcast transcript also discussed the challenges faced during the mission, including the need for further tests and innovative solutions.
+
+The fact-check portion of the report accu...
+
+2025-07-16 18:39:03,797 - __main__ - INFO - [END] Report generated.
+2025-07-16 19:08:54,464 - __main__ - INFO - [INFO] Running pipeline test with sample transcript...
+
+2025-07-16 19:08:54,467 - __main__ - INFO - [START] Running analysis pipeline...
+2025-07-16 19:16:12,635 - __main__ - INFO - [INFO] Running pipeline test with sample transcript...
+
+2025-07-16 19:16:12,639 - __main__ - INFO - [START] Running analysis pipeline...
+2025-07-16 19:16:20,571 - __main__ - INFO - [INFO] Summarization took 7.93 seconds
+2025-07-16 19:16:37,058 - __main__ - INFO - [INFO] Fact Check took 16.48 seconds
+2025-07-16 19:16:39,614 - __main__ - INFO - [INFO] Report generation took 2.55 seconds
+2025-07-16 19:16:39,616 - __main__ - INFO - [INFO] Total pipeline time: 26.98 seconds
+2025-07-16 19:16:39,618 - __main__ - INFO - [INFO] Report preview:
+### 🚀 Fact Check Report
+
+**Confirmed Claims:**
+
+- SpaceX launched its Starship rocket, named after the company's planned Mars spacecraft, from Texas.
+- The July 2025 launch was part of a test to demonstrate emergency contingency measures. 
+- The rocket's disintegration during the launch was due to a fuel leak.
+- SpaceX had previously faced hardware failures and an explosion during a Starship launc...
+
+2025-07-16 19:16:39,881 - __main__ - INFO - [END] Report generated.
+2025-07-16 19:21:08,709 - main - INFO - [START] Running analysis pipeline...
+2025-07-16 19:21:15,596 - main - INFO - [INFO] Summarization took 6.88 seconds
+2025-07-16 19:21:25,819 - main - INFO - [INFO] Fact Check took 10.22 seconds
+2025-07-16 19:21:28,314 - main - INFO - [INFO] Report generation took 2.49 seconds
+2025-07-16 19:21:28,316 - main - INFO - [INFO] Total pipeline time: 19.61 seconds
+2025-07-16 19:21:28,319 - main - INFO - [INFO] Report preview:
+### 🚀 Fact Check Report
+
+**Confirmed Claims:**
+
+- SpaceX performed a recent Starship test launch from Starbase, Texas.
+- The launch had complications with fuel and a failed landing attempt.
+- Elon Musk's SpaceX aims to achieve a moon landing by 2027 as part of the NASA Artemis program.
+- The Starship program faces challenges but remains in progress, focusing on breakthrough discoveries en route to...
+
+2025-07-16 19:21:28,342 - main - INFO - [END] Report generated.
+2025-07-17 09:54:35,888 - main - INFO - [START] Running analysis pipeline...
+2025-07-17 09:54:43,694 - main - INFO - [INFO] Summarization took 7.80 seconds
+2025-07-17 09:54:56,077 - main - INFO - [INFO] Fact Check took 12.38 seconds
+2025-07-17 09:54:59,240 - main - INFO - [INFO] Report generation took 3.16 seconds
+2025-07-17 09:54:59,241 - main - INFO - [INFO] Total pipeline time: 23.35 seconds
+2025-07-17 09:54:59,242 - main - INFO - [INFO] Report preview:
+### 🚀 Fact Check Report
+
+**Confirmed Claims:**
+
+- SpaceX carried out a recent rocket launch, named Starship.
+- The launch took place at Starbase, Texas.
+- The rocket separated from its heavy booster as planned.
+- The launch encountered issues, including a fuel leak and problematic vibrations.
+- The company aims to reach Earth orbit and beyond, ultimately focusing on sending astronauts to Mars.
+- E...
+
+2025-07-17 09:54:59,243 - main - INFO - [END] Report generated.

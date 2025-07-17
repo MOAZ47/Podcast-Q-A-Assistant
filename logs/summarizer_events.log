@@ -1,0 +1,13 @@
+2025-07-16 11:49:52,771 - INFO - Ray Initialization took 8.1 seconds
+2025-07-16 11:52:04,710 - INFO - Ray Initialization took 7.7 seconds
+2025-07-16 11:57:47,776 - INFO - [INFO] Ray initialized in 11.24 seconds.
+2025-07-16 11:57:47,779 - INFO - [TEST] Running summarizer on simulated text...
+2025-07-16 11:57:47,780 - INFO - [START] Summarization with 24 chunks using `sshleifer/distilbart-cnn-12-6` and 4 workers.
+2025-07-16 12:06:14,105 - INFO - [DONE] Summarization completed in 506.30 seconds.
+2025-07-16 12:06:14,173 - INFO - [INFO] Final summary length: 7117 characters.
+2025-07-16 12:08:53,391 - INFO - [INFO] Starting new test with sshleifer/distilbart-cnn-12-6
+2025-07-16 12:09:06,324 - INFO - [INFO] Ray initialized in 12.93 seconds.
+2025-07-16 12:09:06,328 - INFO - [TEST] Running summarizer on simulated text...
+2025-07-16 12:09:06,329 - INFO - [START] Summarization with 24 chunks using `sshleifer/distilbart-cnn-12-6` and 4 workers.
+2025-07-16 12:16:35,590 - INFO - [DONE] Summarization completed in 449.24 seconds.
+2025-07-16 12:16:35,661 - INFO - [INFO] Final summary length: 7117 characters.

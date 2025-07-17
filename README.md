@@ -24,7 +24,7 @@ A Multimodal LLM Agentic AI application that allows users to upload podcast/audi
 |------------------|--------------------------------------------|
 | Transcription    | [OpenAI Whisper](https://github.com/openai/whisper) |
 | LLM              | [Cohere LLM](https://cohere.com) via LangChain |
-| Fact Checking    | Custom agent using LLM + external search   |
+| Fact Checking    | LLM + parallel async web search (Tavily API)   |
 | Vector Store     | [Weaviate](https://weaviate.io/) (optional) |
 | Prompting        | LangChain's `FewShotPromptTemplate`        |
 | Frontend         | Streamlit                                  |
@@ -53,6 +53,27 @@ User Uploads Audio
 Streamlit UI → Transcript + Final Report
 
 ```
+---
+
+| Stage              | Before          | After Optimization | Improvement                                     |
+| ------------------ | --------------- | ------------------ | ----------------------------------------------- |
+| **Transcription**  | \~83 seconds    | \~68 seconds       | ✅ Faster model loading, CPU prewarming          |
+| **Summarization**  | \~17 seconds    | \~2–7 seconds      | ✅ Switched to Cohere + chunked async processing |
+| **Fact Check**     | \~14–18 seconds | \~6–11 seconds     | ✅ Parallel async search using `threading`       |
+| **Report Gen**     | \~95 seconds 😅 | \~2–3 seconds 😎   | ✅ Optimized FewShot prompts and LLM chaining    |
+| **Total Pipeline** | \~160 seconds   | \~100–130 seconds    | 🚀 **30% reduction in latency**              |
+
+
+
+---
+## 🧩 How It Works
+<ul>
+        <li>Upload an audio file.</li>
+        <li>transcription.py uses Whisper to convert it into text.</li>
+        <li>cohere_summarizer.py breaks large transcripts into chunks and summarizes them via Cohere’s LLM.</li>
+        <li>factchecker.py extracts factual claims and verifies them using an LLM agent backed by parallel web search (Tavily).</li>
+        <li>reporter.py uses few-shot prompts to generate a clean, confidence-rated markdown report.</li>
+</ul>
 
 ---
 
@@ -86,7 +107,7 @@ streamlit run app.py
 ├── config.py            # API keys
 ├── agents/
 │   ├── transcription.py
-│   ├── summarizer.py
+│   ├── cohere_summarizer.py
 │   ├── factchecker.py
 │   └── reporter.py
 ├── requirements.txt

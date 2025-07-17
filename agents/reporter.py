@@ -1,57 +1,100 @@
+import sys, os, time, logging
 from langchain_core.prompts import PromptTemplate, FewShotPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_cohere import ChatCohere
-import sys
-import os
+
+# Add project root to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import config
 
-def reporter(summary, fact_check_output):
-    llm = ChatCohere(model="command", cohere_api_key=config.COHERE_API_KEY)
-    # Example 1
+# --- Logging ---
+LOG_DIR = os.path.join(os.getcwd(), "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
+LOG_PATH = os.path.join(LOG_DIR, "report.log")
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler(LOG_PATH),
+        logging.StreamHandler()
+    ]
+)
+
+# Setup Logging
+logger = logging.getLogger(__name__)
+
+def generate_final_report(summary: str, fact_check_output: str) -> str:
+    """
+    Generate a markdown-formatted final report from a podcast summary and its fact check result.
+    """
+
+    # Model
+    llm = ChatCohere(model="command-r", cohere_api_key=config.COHERE_API_KEY)
+
+    # --- Examples ---
     example1 = {
-        "summary": "Elon Musk discussed reusable rockets and their role in making Mars colonization affordable.",
-        "fact_check": "Confirmed: SpaceX is developing reusable Starship rockets. Confirmed: Mars colonization is a stated goal. No inaccuracies found.",
-        "final_report": """Confirmed claims include the development of reusable rockets by SpaceX and the goal of colonizing Mars. No factual inaccuracies were found.
-    Confidence Level: High
-    Recommendation: The summary can be trusted."""
+        "summary": "The host stated that WHO declared COVID-19 a pandemic in March 2020 and that vaccines became widely available in early 2021.",
+        "fact_check": (
+            "Confirmed: WHO declared COVID-19 a global pandemic on March 11, 2020.\n"
+            "Confirmed: Vaccines became widely available to the public in early 2021 in the US and EU.\n"
+            "No major inaccuracies found."
+        ),
+        "final_report": """### ✅ Fact Check Report
+
+        **Confirmed Claims:**
+        - WHO declared COVID-19 a pandemic in March 2020.
+        - Vaccines were widely available by early 2021.
+
+        **Inaccuracies:** None found.
+
+        **Confidence Level:** High  
+        **Recommendation:** The summary is factually reliable and can be trusted.
+        """
     }
 
-    # Example 2
     example2 = {
-        "summary": "The speaker claimed that AI is already sentient and can feel emotions.",
-        "fact_check": "Partially confirmed: AI systems can simulate emotions but are not sentient. Inaccuracy: No current AI is proven to be sentient.",
-        "final_report": """The claim that AI is sentient is inaccurate, though it's true that AI can simulate emotions. This weakens the reliability of the summary.
-    Confidence Level: Medium
-    Recommendation: Use caution when trusting this summary."""
+        "summary": "The speaker claimed that electric vehicles (EVs) never require battery replacement.",
+        "fact_check": (
+            "Inaccuracy: EV batteries degrade and may need replacement after 8–10 years.\n"
+            "Partially accurate: Some EVs are long-lasting, but 'never' is misleading."
+        ),
+        "final_report": """### ⚠️ Fact Check Report
+
+        **Confirmed Claims:**
+        - EV batteries can last many years without replacement.
+
+        **Inaccuracies:**
+        - Claiming EVs 'never' need battery replacement is misleading. Battery degradation occurs over time.
+
+        **Confidence Level:** Medium  
+        **Recommendation:** Be cautious. Some misleading information is present.
+        """
     }
 
-    
+    # --- Prompt Templates ---
     example_prompt = PromptTemplate(
         input_variables=["summary", "fact_check", "final_report"],
-        template="""
-            Summary:
-            {summary}
-
-            Fact Check Results:
-            {fact_check}
-
-            Final Report:
-            {final_report}
-        """
+        template=(
+            "Summary:\n{summary}\n\n"
+            "Fact Check Results:\n{fact_check}\n\n"
+            "Final Report:\n{final_report}"
+        )
     )
-    
-    report_prompt = FewShotPromptTemplate(
+
+    fewshot_prompt = FewShotPromptTemplate(
         examples=[example1, example2],
         example_prompt=example_prompt,
         prefix=(
-            "You are a final reporting agent. Your job is to review a podcast summary and fact-checking output, "
-            "then write a final report with your assessment.\n\n"
-            "Below are a few example reports:\n"
+            "You are a fact-checking report generator. Based on the summary and fact-check output, generate a markdown-formatted report using this structure:\n\n"
+            "### [Emoji] Fact Check Report\n\n"
+            "**Confirmed Claims:**\n- ...\n\n"
+            "**Inaccuracies:**\n- ...\n\n"
+            "**Confidence Level:** ...\n"
+            "**Recommendation:** ..."
         ),
         suffix=(
-            "---\n"
-            "Now analyze the following:\n\n"
+            "\n---\nNow evaluate this:\n\n"
             "Summary:\n"
             "{summary}\n\n"
             "Fact Check Results:\n"
@@ -67,22 +110,34 @@ def reporter(summary, fact_check_output):
         input_variables=["summary", "fact_check"]
     )
 
-    report_chain = (
-        {"summary": lambda x: summary, "fact_check": lambda x: fact_check_output}
-        | report_prompt
+    # Run the chain
+    chain = (
+        {"summary": lambda _: summary.strip(), "fact_check": lambda _: fact_check_output.strip()}
+        | fewshot_prompt
         | llm
         | StrOutputParser()
     )
 
-    response = report_chain.invoke({"summary": summary, "fact_check": fact_check_output})
-    # print(f"Report: \n{response} \n")
-    return response
-    
+    final_report = chain.invoke({"summary": summary, "fact_check": fact_check_output})
+
+    # --- Optional Warning ---
+    if not final_report.strip().startswith("###"):
+        logger.warning("[WARNING] Final report is not in expected markdown format.")
+
+    return final_report
+
+
+
+# --- CLI test ---
 if __name__ == "__main__":
-    summary = "Space X has undertaken another test launch of a giant new rocket that it calls Starship. Starship lifted off just after 7.30pm Eastern time today. But not everything has been going according to plan. Empire Science correspondent Jeff Brumfield joins us now to talk about this latest attempt. SpaceX said it had sprung a fuel leak and I was watching it tumble back in above the Indian Ocean. SpaceX later said that the problem there was sort of some harmonic response in the first launch. That's just a wicked vibration that actually shook up the engines until they broke and then in March there was a hardware failure and a single engine. SpaceX made it to space but you know you can't call this a success. This program is starting to look like it's slipping behind. Starship was supposed to be able to at least orbit the earth by now. And on this particular flight the fact they couldn't hit reentry is a big problem. SpaceX has talked about sending a Starship without people to Mars as soon as next year. There's so much they need to work through to get the spacecraft working. NASA wants Starship to land people on the moon as soon as 2027. But you never count Elon Musk or SpaceX out."
+    sample_summary = (
+        "Tesla CEO Elon Musk claimed during the podcast that their cars can fully drive themselves without human intervention as of 2023."
+    )
+    sample_fact_check = (
+        "Inaccuracy: As of 2023, Tesla's Full Self-Driving (FSD) software requires driver supervision and is not fully autonomous.\n"
+        "Partially accurate: Tesla has made progress, but Level 5 autonomy is not yet achieved.\n"
+        "No regulatory approval exists for full self-driving as of 2023."
+    )
 
-    fact_check_output = "The article alleges the following points:\n1. Starship is a rocket developed by SpaceX that underwent a test launch mentioned in the statement.\n2. The launch time stated was incorrect, as it lifted off just after 7.30 pm Eastern time.\n3. Problems during the launch included a fuel leak and vibrations that shook the engines causing a malfunction. These issues caused the rocket to fail to orbit Earth as planned.\n4. SpaceX has previously announced plans to send a Starship spacecraft to Mars without passengers as soon as next year.\n5. NASA wants to use Starship to land personnel on the moon by 2027.\nAfter researching, I can confirm the factual accuracy of the statement with the exception of item number 2 which should read as follows: \"Starship lifted off from SpaceX's Starbase facility in Boca Chica, Texas, at approximately 2:54 pm CST on November 6, 2022.\"\nLet me know if you'd like me to verify any other statements."
-
-    report = reporter(summary, fact_check_output)
-    print("\n📄 Final Report:\n")
-    print(report)
+    print("📄 Generated Report:\n")
+    print(generate_final_report(sample_summary, sample_fact_check))

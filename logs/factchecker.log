@@ -1,0 +1,51 @@
+2025-07-16 13:26:57,223 - INFO - [TEST] Running fact checker on test claims...
+2025-07-16 13:26:57,224 - INFO - [FACT CHECK] Started for input: NASA is funding the Artemis program for a moon landing in 2025.
+SpaceX launched Starship in 2023.
+IS...
+2025-07-16 13:27:01,718 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 13:27:02,527 - INFO - [INFO] Running 3 parallel searches.
+2025-07-16 13:27:02,528 - INFO - [SEARCH] Querying: NASA Artemis program 2025
+2025-07-16 13:27:02,529 - ERROR - [ERROR] Search failed for 'NASA Artemis program 2025': 'TavilyClient' object has no attribute 'search_async'
+2025-07-16 13:27:02,530 - INFO - [SEARCH] Querying: SpaceX launched Starship in 2023
+2025-07-16 13:27:02,530 - ERROR - [ERROR] Search failed for 'SpaceX launched Starship in 2023': 'TavilyClient' object has no attribute 'search_async'
+2025-07-16 13:27:02,531 - INFO - [SEARCH] Querying: ISRO Chandrayaan 3 2023
+2025-07-16 13:27:02,532 - ERROR - [ERROR] Search failed for 'ISRO Chandrayaan 3 2023': 'TavilyClient' object has no attribute 'search_async'
+2025-07-16 13:27:02,872 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 13:27:03,827 - INFO - [INFO] Running 3 parallel searches.
+2025-07-16 13:27:03,828 - INFO - [SEARCH] Querying: NASA funding for Artemis program 2025
+2025-07-16 13:27:03,828 - ERROR - [ERROR] Search failed for 'NASA funding for Artemis program 2025': 'TavilyClient' object has no attribute 'search_async'
+2025-07-16 13:27:03,829 - INFO - [SEARCH] Querying: Space X starship launch date
+2025-07-16 13:27:03,830 - ERROR - [ERROR] Search failed for 'Space X starship launch date': 'TavilyClient' object has no attribute 'search_async'
+2025-07-16 13:27:03,830 - INFO - [SEARCH] Querying: ISRO Chandrayaan III 2023
+2025-07-16 13:27:03,831 - ERROR - [ERROR] Search failed for 'ISRO Chandrayaan III 2023': 'TavilyClient' object has no attribute 'search_async'
+2025-07-16 13:27:04,204 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 13:27:05,540 - INFO - [FACT CHECK] Completed successfully.
+2025-07-16 14:35:25,574 - INFO - [TEST] Running fact checker on test claims...
+2025-07-16 14:35:25,576 - INFO - [FACT CHECK] Started for input: NASA is funding the Artemis program for a moon landing in 2025.
+SpaceX launched Starship in 2023.
+IS...
+2025-07-16 14:35:33,219 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 14:35:33,998 - INFO - [INFO] Running 3 threaded searches.
+2025-07-16 14:35:33,999 - INFO - [SEARCH] Querying: NASA Artemis program 2025
+2025-07-16 14:35:34,000 - INFO - [SEARCH] Querying: SpaceX launched Starship in 2023
+2025-07-16 14:35:34,002 - INFO - [SEARCH] Querying: ISRO's Chandrayaan 3 landed successfully on the moon in 2023
+2025-07-16 14:35:36,124 - INFO - [RESULT] SpaceX launched Starship in 2023 => SpaceX launched Starship's second flight test on November 18, 2023. It achieved major milestones. Th...
+2025-07-16 14:35:36,141 - INFO - [RESULT] NASA Artemis program 2025 => The Artemis II mission is planned for 2026, marking the first crewed flight around the Moon. It will...
+2025-07-16 14:35:36,801 - INFO - [RESULT] ISRO's Chandrayaan 3 landed successfully on the moon in 2023 => ISRO's Chandrayaan-3 landed successfully on the moon on August 23, 2023. The mission achieved a soft...
+2025-07-16 14:35:37,143 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 14:35:39,924 - INFO - [FACT CHECK] Completed successfully.
+2025-07-16 16:58:06,090 - INFO - [TEST] Running fact checker on test claims...
+2025-07-16 16:58:06,092 - INFO - [FACT CHECK] Started for input: NASA is funding the Artemis program for a moon landing in 2025.
+SpaceX launched Starship in 2023.
+IS...
+2025-07-16 16:58:06,914 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 16:58:07,787 - INFO - [INFO] Running 3 threaded searches.
+2025-07-16 16:58:07,788 - INFO - [SEARCH] Querying: NASA Artemis program 2025
+2025-07-16 16:58:07,790 - INFO - [SEARCH] Querying: SpaceX launched Starship in 2023
+2025-07-16 16:58:07,793 - INFO - [SEARCH] Querying: ISRO's Chandrayaan 3 landed successfully on the moon in 2023
+2025-07-16 16:58:09,842 - INFO - [RESULT] NASA Artemis program 2025 => The Artemis II mission is planned for 2026, marking the first crewed flight around the Moon. It will...
+2025-07-16 16:58:09,863 - INFO - [RESULT] ISRO's Chandrayaan 3 landed successfully on the moon in 2023 => ISRO's Chandrayaan-3 successfully landed on the moon on August 23, 2023. The mission included a luna...
+2025-07-16 16:58:10,037 - INFO - [RESULT] SpaceX launched Starship in 2023 => SpaceX launched Starship in November 2023. The second flight test reached outer space. The mission a...
+2025-07-16 16:58:10,430 - INFO - HTTP Request: POST https://api.cohere.com/v1/chat "HTTP/1.1 200 OK"
+2025-07-16 16:58:13,084 - INFO - [FACT CHECK] Completed successfully.
+2025-07-16 16:58:13,085 - INFO - [DONE] Fact Check completed in 6.99s
