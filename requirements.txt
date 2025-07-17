@@ -13,3 +13,4 @@ transformers
 duckduckgo-search
 tavily-python
 pytest
+ray
