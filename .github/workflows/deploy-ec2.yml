@@ -28,6 +28,7 @@ jobs:
 
       - name: Run tests (Optional but Highly Recommended)
         run: |
+          pip install -r requirements.txt
           pip install pytest # Install pytest for running tests
           pytest tests/    # Path to your test directory
 
